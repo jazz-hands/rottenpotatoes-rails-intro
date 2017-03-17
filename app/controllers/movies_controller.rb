@@ -11,7 +11,6 @@ class MoviesController < ApplicationController
   end
 
   def index
-    
     @movies = Movies.all
     @current = nil
     
