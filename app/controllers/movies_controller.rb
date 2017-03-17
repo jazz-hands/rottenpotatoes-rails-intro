@@ -11,7 +11,7 @@ class MoviesController < ApplicationController
   end
 
   def index
-    @movies = Movies.all
+    @movies = Movie.all
     @current = nil
     
     sort = params[:sort]
