@@ -13,10 +13,11 @@ class MoviesController < ApplicationController
   def index
     @movies = Movie.all
     @current = nil
+    session[:sort] = params[:sort] if params[:sort] != nil
+    sort = session[:sort]
+    session[:checked_ratings] = params[:ratings] if params[:ratings] != nil
+    checked_ratings = session[:checked_ratings]
     
-    sort = params[:sort]
-    checked_ratings = params[:ratings]
-
     if checked_ratings != nil
       @movies = []
       checked_ratings.each_key do |checked|
@@ -36,6 +37,7 @@ class MoviesController < ApplicationController
     end
     
     @all_ratings = []
+    @checked_ratings = []
     
     Movie.all.each do |movie|
       unless @all_ratings.include?(movie.rating) 
@@ -43,6 +45,17 @@ class MoviesController < ApplicationController
       end
     end
     @all_ratings.sort!
+    
+    @all_ratings.each_with_index do |rating, i|
+      @checked_ratings[i] = true
+      if checked_ratings == nil
+        @checked_ratings[i] = true
+      else
+        unless checked_ratings.include?(rating)
+          @checked_ratings[i] = false
+        end
+      end
+    end
   end
 
   def new
